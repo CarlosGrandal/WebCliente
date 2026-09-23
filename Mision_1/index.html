@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El oráculo de los números</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <main class="juego">
+        <h1>El oráculo de los números 🔮</h1>
+        <p>Adivina un número entre 1 y 100.</p>
+
+        <div class="controles">
+            <label for="numero" class="sr-only">Escribe un número entre 1 y 100</label>
+            <input id="numero" type="number" min="1" max="100" step="1" placeholder="1–100" autofocus>
+            <button id="comprobar" type="button">Comprobar</button>
+        </div>
+
+        <p id="resultado" role="status" aria-live="polite">El oráculo está esperando tu primera consulta.</p>
+        <p>Intentos: <span id="intentos">0</span></p>
+    </main>
+</body>
+</html>

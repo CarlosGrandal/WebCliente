@@ -9,11 +9,19 @@
 </head>
 <body>
     <div id="marcador">Manzanas: <span id="puntuacion">0</span></div>
+    <h1 class="titulo-juego">S<span id="letraN">N</span>AKE</h1>
     <main id = "tablero" class="tablero">
-        <!-- Aqui empiezo haciendo los limites del "tablero" para que se vea por 
-        donde se juega.-->
-        <div></div>
     </main>
+    <p class="ayuda">USA W A S D PARA MOVERTE</p>
+    <section id="menuInicio" class="menu-final" role="dialog" aria-modal="true" aria-labelledby="tituloInicio">
+        <div class="panel-final panel-inicio">
+            <h1 id="tituloInicio">Bienvenido a Serpiente<span class="tm">™</span></h1>
+            <div class="botones-inicio">
+                <button id="botonJugarRojo" class="jugar-rojo" type="button">Jugar</button>
+                <button id="botonJugarVerde" class="jugar-verde" type="button">Jugar</button>
+            </div>
+        </div>
+    </section>
     <section id="menuFinal" class="menu-final" role="dialog" aria-modal="true" aria-labelledby="tituloFinal" hidden>
         <div class="panel-final">
             <h1 id="tituloFinal">¡Has perdido!</h1>

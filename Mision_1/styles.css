@@ -1,10 +1,7 @@
 :root {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    color: #14213d;
-    background-image: url(fotos/prado.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #f4f6f1;
+    background: #101a17;
 }
 
 * { box-sizing: border-box; }
@@ -14,7 +11,13 @@ body {
     margin: 0;
     display: grid;
     place-items: center;
-    padding: 1.5rem;
+    align-content: center;
+    gap: 1rem;
+    padding: 5rem 1rem 2rem;
+    background:
+        radial-gradient(ellipse at 50% 42%, rgb(48 91 63 / 36%), transparent 52%),
+        radial-gradient(ellipse at 50% 110%, #1c3027, transparent 58%),
+        #101a17;
 }
 
 #marcador {
@@ -23,55 +26,154 @@ body {
     left: 1rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 0.9rem;
-    color: white;
-    background: #111;
-    border: 2px solid #444;
-    border-radius: 0.35rem;
-    box-shadow: 0 3px 8px rgb(0 0 0 / 35%), inset 0 0 0 1px #000;
-    font-size: 0.8rem;
+    gap: 0.8rem;
+    padding: 0.55rem 0.85rem;
+    color: #cbd5ce;
+    background: rgb(8 13 11 / 88%);
+    border: 1px solid rgb(255 255 255 / 14%);
+    border-radius: 0.6rem;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 24%);
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
+    backdrop-filter: blur(10px);
 }
 
 #puntuacion {
     min-width: 2ch;
     color: #ffe600;
     font-family: "Courier New", monospace;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     line-height: 1;
     text-align: right;
     text-shadow: 0 0 8px rgb(255 230 0 / 45%);
 }
 
 .tablero {
-    width: min(90vw, 80vh);
-    height: min(90vw, 80vh);
-    background: rgb(155, 207, 112);
-    border-radius: 1.25rem;
+    width: min(88vw, 68vh, 620px);
+    aspect-ratio: 1;
+    padding: clamp(0.4rem, 1.3vw, 0.75rem);
+    background: #17241e;
+    border: 1px solid rgb(222 255 225 / 18%);
+    border-radius: 1.2rem;
     display: grid;
-    grid-template-columns: repeat(10, 10%);
-    grid-template-rows: repeat(10, 10%);
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: clamp(2px, 0.55vw, 5px);
+    box-shadow: 0 24px 70px rgb(0 0 0 / 42%), inset 0 1px 0 rgb(255 255 255 / 7%);
+}
+
+.casilla {
+    min-width: 0;
+    min-height: 0;
+    border-radius: 0.25rem;
+    background: rgb(231 250 235 / 3%);
 }
 
 .serpiente {
-
-    background-color:aquamarine;
-    border-radius: 33%;
+    z-index: 1;
+    border-radius: 32%;
+    background: linear-gradient(145deg, var(--snake-light, #a8f06a), var(--snake-dark, #56bd58) 72%);
+    box-shadow: inset 0 1px 2px rgb(255 255 255 / 48%), 0 2px 5px rgb(0 0 0 / 25%);
 }
+
+.cabeza {
+    position: relative;
+    border-radius: 38%;
+    background:
+        radial-gradient(circle at 68% 31%, #14251a 0 2px, transparent 2.5px),
+        radial-gradient(circle at 68% 69%, #14251a 0 2px, transparent 2.5px),
+        linear-gradient(145deg, var(--head-light, #d0ff84), var(--head-dark, #76db58) 72%);
+}
+
+.cabeza-izquierda {
+    background:
+        radial-gradient(circle at 32% 31%, #14251a 0 2px, transparent 2.5px),
+        radial-gradient(circle at 32% 69%, #14251a 0 2px, transparent 2.5px),
+        linear-gradient(145deg, var(--head-light, #d0ff84), var(--head-dark, #76db58) 72%);
+}
+
+.cabeza-arriba {
+    background:
+        radial-gradient(circle at 31% 32%, #14251a 0 2px, transparent 2.5px),
+        radial-gradient(circle at 69% 32%, #14251a 0 2px, transparent 2.5px),
+        linear-gradient(145deg, var(--head-light, #d0ff84), var(--head-dark, #76db58) 72%);
+}
+
+.cabeza-abajo {
+    background:
+        radial-gradient(circle at 31% 68%, #14251a 0 2px, transparent 2.5px),
+        radial-gradient(circle at 69% 68%, #14251a 0 2px, transparent 2.5px),
+        linear-gradient(145deg, var(--head-light, #d0ff84), var(--head-dark, #76db58) 72%);
+}
+
 .manzana {
-    background-color: #e63946;
-    border-radius: 50%;
+    position: relative;
+    display: grid;
+    place-items: center;
 }
-.serpienteMuerta {  /*Solucion temporal*/
 
-    background-color: red;
+.manzana::before {
+    content: "";
+    width: 66%;
+    height: 64%;
+    border-radius: 46% 46% 50% 50%;
+    background: radial-gradient(circle at 30% 25%, var(--apple-light, #ffaaa0),
+                 var(--apple-mid, #f04448) 34%,var(--apple-dark, #bd213b) 82%);
+    box-shadow: inset -2px -2px 3px rgb(95 0 20 / 28%), 0 2px 4px rgb(0 0 0 / 35%);
+}
+
+.manzana::after {
+    content: "";
+    position: absolute;
+    top: 12%;
+    left: 52%;
+    width: 25%;
+    height: 23%;
+    border-radius: 100% 0 100% 0;
+    background: var(--leaf-color, #a7ed68);
+    transform: rotate(-20deg);
+    box-shadow: -2px -2px 0 -1px #614629;
+}
+.serpienteMuerta {
+
+    background-color: var(--dead-snake, red);
     border-radius: 33%;
 }
 
-h1 { margin-top: 0; color: #7b2cbf; }
+.titulo-juego {
+    margin: 0;
+    color: #f5f7ed;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 950;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    text-shadow: 0 3px 18px rgb(144 227 113 / 20%);
+}
+
+#letraN { color: #76db58; }
+body.modo-alternativo #letraN { color: #f04448; }
+
+body.modo-alternativo {
+    --snake-light: #ff8b8b;
+    --snake-dark: #d92f3d;
+    --head-light: #ffb0a9;
+    --head-dark: #e94750;
+    --apple-light: #d6ffa1;
+    --apple-mid: #79d542;
+    --apple-dark: #39862c;
+    --leaf-color: #356b2e;
+    --dead-snake: #72cf58;
+}
+
+.ayuda {
+    margin: 0;
+    color: #9daf9f;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
 
 .menu-final {
     position: fixed;
@@ -117,3 +219,46 @@ h1 { margin-top: 0; color: #7b2cbf; }
 
 .panel-final button:hover { background: #fff176; transform: rotate(-35deg); }
 .panel-final button[hidden] { display: none; }
+
+.panel-inicio {
+    width: min(100%, 38rem);
+}
+
+.panel-inicio h1 {
+    margin: 0 0 2rem;
+    color: #f5f7ed;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+}
+
+.tm {
+    margin-left: 0.12em;
+    color: #ffe600;
+    font-size: 0.48em;
+    vertical-align: super;
+}
+
+.botones-inicio {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.botones-inicio button {
+    width: auto;
+    min-width: 8rem;
+    min-height: 3.25rem;
+    margin: 0;
+    padding: 0.7rem 1.5rem;
+    color: white;
+    border: 1px solid rgb(255 255 255 / 35%);
+    border-radius: 0.7rem;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    backdrop-filter: blur(8px);
+}
+
+.botones-inicio .jugar-rojo { background: rgb(224 69 77 / 48%); }
+.botones-inicio .jugar-verde { background: rgb(111 196 105 / 48%); }
+.botones-inicio .jugar-rojo:hover { background: rgb(224 69 77 / 68%); transform: translateY(-2px); }
+.botones-inicio .jugar-verde:hover { background: rgb(111 196 105 / 68%); transform: translateY(-2px); }

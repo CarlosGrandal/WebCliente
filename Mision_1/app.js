@@ -1,7 +1,8 @@
-// app.js — el oráculo elige su número secreto:
+// Lógica del juego Snake.
 const tablero = document.getElementById("tablero");
 const puntuacion = document.getElementById("puntuacion");
 const menuFinal = document.getElementById("menuFinal");
+const menuInicio = document.getElementById("menuInicio");
 const resumenPartida = document.getElementById("resumenPartida");
 const categoriaPartida = document.getElementById("categoriaPartida");
 const tituloFinal = document.getElementById("tituloFinal");
@@ -11,8 +12,10 @@ let serpiente = [21, 22, 23];
 let manzanasComidas = 0;
 let iniciado = false;
 let intervalo;
-let direccion;
+let direccion = "derecha";
+let direccionPendiente;
 let manzana;
+let modoAlternativo = false;
 
 function crearManzana() {
     const libres = Array.from({ length: 100 }, (_, i) => i)
@@ -30,6 +33,9 @@ function dibujarTablero() {
 
         if (serpiente.includes(i)) {
             casilla.classList.add("serpiente");
+            if (i === serpiente[serpiente.length - 1]) {
+                casilla.classList.add("cabeza", `cabeza-${direccion || "derecha"}`);
+            }
         }
         if (i === manzana) {
             casilla.classList.add("manzana");
@@ -39,44 +45,53 @@ function dibujarTablero() {
 }
 
 document.addEventListener("keydown", function(event) {
-
-    if(event.key === "w"){
-
-        if(direccion != "abajo"){
-
-            direccion = "arriba";
-        }
+    if (event.key.toLowerCase() === "n" && !event.repeat) {
+        cambiarModo(!modoAlternativo);
+        return;
     }
-    else if(event.key === "s"){
 
-        if(direccion != "arriba"){
-            
-            direccion = "abajo";
-        }
-    }
-    else if(event.key === "d"){
+    if (!iniciado) return;
 
-        if(direccion != "izquierda"){
-            
-            direccion = "derecha";
-        }
-    }
-    else if(event.key === "a"){
+    let nuevaDireccion;
 
-        if(direccion != "derecha"){
-            
-            direccion = "izquierda";
-        }
+    if (event.key === "w") nuevaDireccion = "arriba";
+    else if (event.key === "s") nuevaDireccion = "abajo";
+    else if (event.key === "d") nuevaDireccion = "derecha";
+    else if (event.key === "a") nuevaDireccion = "izquierda";
+
+    if (nuevaDireccion && !direccionPendiente) {
+        const esMarchaAtras =
+            (nuevaDireccion === "arriba" && direccion === "abajo") ||
+            (nuevaDireccion === "abajo" && direccion === "arriba") ||
+            (nuevaDireccion === "derecha" && direccion === "izquierda") ||
+            (nuevaDireccion === "izquierda" && direccion === "derecha");
+
+        if (!esMarchaAtras) direccionPendiente = nuevaDireccion;
     }
-    if (!iniciado) {
-        iniciado = true;
-        intervalo = setInterval(moverSerpiente, 150);
-    }
+
 });
+
+function cambiarModo(alternativo) {
+    modoAlternativo = alternativo;
+    document.body.classList.toggle("modo-alternativo", modoAlternativo);
+}
+
+function empezarPartida(alternativo) {
+    cambiarModo(alternativo);
+    menuInicio.hidden = true;
+    iniciado = true;
+    intervalo = setInterval(moverSerpiente, 250);
+}
+
+document.getElementById("botonJugarRojo").addEventListener("click", () => empezarPartida(true));
+document.getElementById("botonJugarVerde").addEventListener("click", () => empezarPartida(false));
 
 function moverSerpiente() {
 
-    if (!direccion) return;
+    if (direccionPendiente) {
+        direccion = direccionPendiente;
+        direccionPendiente = undefined;
+    }
 
     let cabeza = serpiente[serpiente.length - 1];
 
@@ -110,42 +125,6 @@ function moverSerpiente() {
     dibujarTablero();
 }
 
-function comprobarLimite(cabeza){
-
-    if(direccion == "derecha"){
-
-        if(cabeza == 9 || cabeza == 19|| cabeza == 29|| cabeza == 39 || cabeza == 49|| cabeza == 59 || cabeza == 69
-            || cabeza == 79 || cabeza == 89 || cabeza == 99){
-
-                perder()
-            }
-    }
-    if(direccion == "izquierda"){
-
-        if(cabeza == 0 || cabeza == 10|| cabeza == 20|| cabeza == 30 || cabeza == 40|| cabeza == 50 || cabeza == 60
-            || cabeza == 70 || cabeza == 80 || cabeza == 90){
-
-                perder()
-            }
-    }
-    if(direccion == "arriba"){
-
-        if(cabeza == 1 || cabeza == 2|| cabeza == 3|| cabeza == 4 || cabeza == 5|| cabeza == 6 || cabeza == 7
-            || cabeza == 8 || cabeza == 9 || cabeza == 0){
-
-                perder()
-            }
-    }
-    if(direccion == "abajo"){
-        
-        if(cabeza == 91 || cabeza == 92|| cabeza == 93|| cabeza == 94 || cabeza == 95|| cabeza == 96 || cabeza == 97
-            || cabeza == 98 || cabeza == 99 || cabeza == 90){
-
-                perder()
-            }
-    }
-}
-
 function perder(){
 
     for (let posicion of serpiente) {
@@ -155,7 +134,8 @@ function perder(){
         casilla.classList.add("serpienteMuerta");
     }
     clearInterval(intervalo);
-    resumenPartida.textContent = `Comiste ${manzanasComidas} manzanas y tu serpiente llegó a ${serpiente.length} casillas.`;
+    resumenPartida.textContent = `Comiste ${manzanasComidas} 
+                                manzanas y tu serpiente llegó a ${serpiente.length} casillas.`;
     let categoria = "Novato";
     if (manzanasComidas >= 15 && manzanasComidas <= 30) {
         categoria = "Pro";
@@ -174,7 +154,8 @@ botonReiniciar.addEventListener("click", function() {
     serpiente = [21, 22, 23];
     manzanasComidas = 0;
     puntuacion.textContent = manzanasComidas;
-    direccion = undefined;
+    direccion = "derecha";
+    direccionPendiente = undefined;
     iniciado = false;
     crearManzana();
     dibujarTablero();

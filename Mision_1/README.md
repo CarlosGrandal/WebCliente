@@ -2,7 +2,7 @@
 
 ## Cómo probarlo
 
-. El juego es un snake clasico del Nokia, controlas a la serpiente con WASD, tu objetivo es comer el maximo posible de manzanas sin morir. Te mueres cuando te chocas con alguno de los bordes del tablero o si te chocas contigo mismo.
+Entra en: https://carlosgrandal.github.io/WebCliente/Mision_1/ y simplemente dale a jugar cuando estés listo. El juego es un snake clasico del Nokia, controlas a la serpiente con WASD, tu objetivo es comer el maximo posible de manzanas sin morir. Te mueres cuando te chocas con alguno de los bordes del tablero o si te chocas contigo mismo.
 
 
 ## Uso de IA

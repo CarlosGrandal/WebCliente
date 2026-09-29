@@ -1,10 +1,24 @@
 // app.js — el oráculo elige su número secreto:
 const tablero = document.getElementById("tablero");
+const puntuacion = document.getElementById("puntuacion");
+const menuFinal = document.getElementById("menuFinal");
+const resumenPartida = document.getElementById("resumenPartida");
+const categoriaPartida = document.getElementById("categoriaPartida");
+const tituloFinal = document.getElementById("tituloFinal");
+const botonReiniciar = document.getElementById("botonReiniciar");
 
 let serpiente = [21, 22, 23];
+let manzanasComidas = 0;
 let iniciado = false;
 let intervalo;
 let direccion;
+let manzana;
+
+function crearManzana() {
+    const libres = Array.from({ length: 100 }, (_, i) => i)
+        .filter(posicion => !serpiente.includes(posicion));
+    manzana = libres.length ? libres[Math.floor(Math.random() * libres.length)] : undefined;
+}
 
 function dibujarTablero() {
     tablero.innerHTML = "";
@@ -16,6 +30,9 @@ function dibujarTablero() {
 
         if (serpiente.includes(i)) {
             casilla.classList.add("serpiente");
+        }
+        if (i === manzana) {
+            casilla.classList.add("manzana");
         }
         tablero.appendChild(casilla);
     }
@@ -59,7 +76,7 @@ document.addEventListener("keydown", function(event) {
 
 function moverSerpiente() {
 
-    //if (!direccion) return;
+    if (!direccion) return;
 
     let cabeza = serpiente[serpiente.length - 1];
 
@@ -81,8 +98,15 @@ function moverSerpiente() {
     const cuerpo = serpiente.slice(1);
     if (cuerpo.includes(cabeza)) return perder();
 
+    const comioManzana = cabeza === manzana;
     serpiente.push(cabeza);
-    serpiente.shift();
+    if (comioManzana) {
+        manzanasComidas++;
+        puntuacion.textContent = manzanasComidas;
+        crearManzana();
+    } else {
+        serpiente.shift();
+    }
     dibujarTablero();
 }
 
@@ -131,6 +155,31 @@ function perder(){
         casilla.classList.add("serpienteMuerta");
     }
     clearInterval(intervalo);
+    resumenPartida.textContent = `Comiste ${manzanasComidas} manzanas y tu serpiente llegó a ${serpiente.length} casillas.`;
+    let categoria = "Novato";
+    if (manzanasComidas >= 15 && manzanasComidas <= 30) {
+        categoria = "Pro";
+    } else if (manzanasComidas > 30) {
+        categoria = "Hacker";
+    }
+    categoriaPartida.textContent = `Nivel: ${categoria}`;
+    tituloFinal.textContent = manzanasComidas === 0 ? "Baneado por malo" : "¡Has perdido!";
+    botonReiniciar.hidden = manzanasComidas === 0;
+    menuFinal.hidden = false;
 
 }
+
+botonReiniciar.addEventListener("click", function() {
+    clearInterval(intervalo);
+    serpiente = [21, 22, 23];
+    manzanasComidas = 0;
+    puntuacion.textContent = manzanasComidas;
+    direccion = undefined;
+    iniciado = false;
+    crearManzana();
+    dibujarTablero();
+    menuFinal.hidden = true;
+});
+
+crearManzana();
 dibujarTablero();

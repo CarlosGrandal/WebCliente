@@ -8,10 +8,19 @@
     <script src="app.js" defer></script>
 </head>
 <body>
+    <div id="marcador">Manzanas: <span id="puntuacion">0</span></div>
     <main id = "tablero" class="tablero">
         <!-- Aqui empiezo haciendo los limites del "tablero" para que se vea por 
         donde se juega.-->
         <div></div>
     </main>
+    <section id="menuFinal" class="menu-final" role="dialog" aria-modal="true" aria-labelledby="tituloFinal" hidden>
+        <div class="panel-final">
+            <h1 id="tituloFinal">¡Has perdido!</h1>
+            <p id="resumenPartida"></p>
+            <p id="categoriaPartida"></p>
+            <button id="botonReiniciar" type="button" aria-label="Volver a jugar" title="Volver a jugar">↻</button>
+        </div>
+    </section>
 </body>
 </html>

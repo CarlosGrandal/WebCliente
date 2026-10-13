@@ -4,87 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f4f6fb" />
-    <meta name="description" content="Explora el mundo Pokémon con PokéDex Explorer." />
+    <meta name="description" content="Explora Pokémon con datos de PokéAPI." />
     <title>PokéDex Explorer</title>
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar" aria-label="Navegación principal">
-        <a class="brand" href="#inicio" aria-label="PokéDex Explorer, inicio">
-          <span class="brand-mark" aria-hidden="true">P</span>
-          <span class="brand-name">PokéDex<span>Explorer</span></span>
-        </a>
-
-        <p class="nav-label">EXPLORAR</p>
-        <nav class="navigation">
-          <a class="nav-link is-active" href="#inicio" aria-current="page">
-            <span class="nav-icon" aria-hidden="true">◉</span> Pokédex
-          </a>
-          <a class="nav-link" href="#tipos">
-            <span class="nav-icon" aria-hidden="true">◇</span> Tipos
-          </a>
-          <a class="nav-link" href="#estadisticas">
-            <span class="nav-icon" aria-hidden="true">▥</span> Estadísticas
-          </a>
-        </nav>
-
-        <div class="sidebar-note">
-          <span class="note-dot" aria-hidden="true"></span>
-          <div><strong>Tu aventura empieza aquí</strong><p>Una guía para descubrirlos todos.</p></div>
+    <main class="app-shell">
+      <header class="page-header">
+        <a class="brand" href="#">◎ <span>PokéDex <b>Explorer</b></span></a>
+        <span class="api-badge"><i></i> Conectado a PokéAPI</span>
+      </header>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">DEX NACIONAL · DATOS EN TIEMPO REAL</p>
+        <h1 id="page-title">Explora el mundo <span>Pokémon</span></h1>
+        <p class="subtitle">Descubre características y estadísticas de tus Pokémon favoritos.</p>
+      </section>
+      <section class="panel" aria-label="Explorador de Pokémon">
+        <div class="toolbar">
+          <label class="search-field"><span aria-hidden="true">⌕</span><input id="pokemon-search" type="search" placeholder="Buscar por nombre o número…" autocomplete="off" /></label>
+          <label class="type-field">Tipo <select id="type-filter"><option value="">Todos los tipos</option></select></label>
         </div>
-      </aside>
-
-      <main id="inicio" class="main-content">
-        <header class="topbar">
-          <div class="breadcrumb"><span>INICIO</span><span aria-hidden="true">/</span><strong>POKÉDEX</strong></div>
-          <div class="api-status"><span class="status-dot" aria-hidden="true"></span> API Pokémon</div>
-        </header>
-
-        <section class="welcome" aria-labelledby="page-title">
-          <div class="welcome-copy">
-            <p class="eyebrow">TU GUÍA DEL MUNDO POKÉMON</p>
-            <h1 id="page-title">PokéDex <span>Explorer</span></h1>
-            <p class="intro">Busca, descubre y conoce a tus Pokémon favoritos.</p>
-          </div>
-          <div class="welcome-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="pokeball"><span></span></span></div>
-        </section>
-
-        <section class="explorer-panel" aria-label="Explorador de Pokémon">
-          <div class="section-heading">
-            <div><p class="eyebrow">DEX NACIONAL</p><h2>Explora Pokémon</h2></div>
-            <span class="count-chip">REGIÓN · TODAS</span>
-          </div>
-
-          <form class="search-row" role="search" aria-label="Buscar Pokémon">
-            <label class="search-box">
-              <span aria-hidden="true">⌕</span>
-              <input type="search" name="pokemon" placeholder="Busca por nombre o número…" aria-label="Nombre o número del Pokémon" />
-              <kbd>/</kbd>
-            </label>
-            <button class="filter-button" type="button"><span aria-hidden="true">☷</span> Filtros <span class="chevron" aria-hidden="true">⌄</span></button>
-          </form>
-
-          <div class="filter-tags" aria-label="Filtros rápidos">
-            <button class="filter-tag is-selected" type="button">Todos <span>→</span></button>
-            <button class="filter-tag" type="button">Tipos <span>＋</span></button>
-            <button class="filter-tag" type="button">Generaciones <span>＋</span></button>
-            <button class="filter-tag" type="button">Favoritos <span>＋</span></button>
-          </div>
-
-          <div class="stats-row" aria-label="Resumen de la Pokédex">
-            <article class="stat-card"><span class="stat-icon stat-icon-red" aria-hidden="true">◉</span><div><span class="stat-label">POKÉMON REGISTRADOS</span><strong>—</strong></div></article>
-            <article class="stat-card"><span class="stat-icon stat-icon-blue" aria-hidden="true">◇</span><div><span class="stat-label">TIPOS DIFERENTES</span><strong>—</strong></div></article>
-            <article class="stat-card"><span class="stat-icon stat-icon-yellow" aria-hidden="true">★</span><div><span class="stat-label">TUS FAVORITOS</span><strong>0</strong></div></article>
-          </div>
-
-          <div class="results-heading"><h3>Todos los Pokémon</h3><span>Preparado para explorar</span></div>
-          <div id="pokemon-grid" class="pokemon-grid" aria-live="polite">
-            <div class="empty-state"><span class="empty-ball" aria-hidden="true">◉</span><div><strong>Tu Pokédex está lista</strong><p>Los Pokémon aparecerán aquí cuando conectemos la API.</p></div></div>
-          </div>
-        </section>
-        <footer class="page-footer">Datos de Pokémon · PokéAPI <span>Proyecto académico</span></footer>
-      </main>
-    </div>
+        <div class="stats" aria-live="polite">
+          <article><span>RESULTADOS</span><strong id="result-count">—</strong></article>
+          <article><span>MEDIA DEL TOTAL DE STATS BASE</span><strong id="average-stat">—</strong></article>
+          <article><span>PÁGINA</span><strong id="page-label">—</strong></article>
+        </div>
+        <p id="status-message" class="status-message" role="status">Cargando Pokémon desde PokéAPI…</p>
+        <div id="pokemon-grid" class="pokemon-grid" aria-live="polite"></div>
+        <nav class="pagination" aria-label="Paginación">
+          <button id="previous-page" type="button" disabled>← Anterior</button>
+          <button id="next-page" type="button" disabled>Siguiente →</button>
+        </nav>
+      </section>
+      <footer>Los datos se obtienen de PokéAPI · Proyecto académico</footer>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

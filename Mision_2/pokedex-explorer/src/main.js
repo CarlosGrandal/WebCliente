@@ -107,7 +107,6 @@ async function loadNextPage({ retry = false } = {}) {
     state.lastFailedOffset = offset;
     setStatus(error instanceof Error ? error.message : 'No se pudieron cargar los Pokémon.', { error: true });
     if (isInitialLoad) grid.replaceChildren();
-    console.error('Error al cargar Pokémon:', error);
   } finally {
     state.isLoading = false;
     grid.setAttribute('aria-busy', 'false');

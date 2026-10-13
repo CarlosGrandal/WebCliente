@@ -1,4 +1,3 @@
-import './styles/main.css';
 import { getPokemonDetails, getPokemonList } from './api/pokemonApi.js';
 import {
   calculateAverageBaseStats,

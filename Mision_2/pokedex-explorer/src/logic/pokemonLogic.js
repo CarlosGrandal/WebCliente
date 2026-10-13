@@ -40,7 +40,7 @@ export function normalizePokemonList(pokemonList) {
   return Array.isArray(pokemonList) ? pokemonList.map(normalizePokemon) : [];
 }
 
-/** Filtra por nombre, número de Pokédex o tipo. */
+/** Filtra el catálogo que ya está cargado por nombre, número o tipo. */
 export function filterPokemon(pokemonList, { search = '', type = '' } = {}) {
   const normalizedSearch = String(search).trim().toLowerCase();
   const normalizedType = String(type).trim().toLowerCase();
@@ -54,7 +54,16 @@ export function filterPokemon(pokemonList, { search = '', type = '' } = {}) {
   });
 }
 
-/** Media del total de estadísticas base disponible por Pokémon en la colección. */
+/** Ordena sin modificar la lista original. */
+export function sortPokemon(pokemonList, order = 'id') {
+  const items = Array.isArray(pokemonList) ? [...pokemonList] : [];
+  if (order === 'name') {
+    return items.sort((a, b) => (a?.name ?? '').localeCompare(b?.name ?? '', 'es'));
+  }
+  return items.sort((a, b) => (a?.id ?? Number.MAX_SAFE_INTEGER) - (b?.id ?? Number.MAX_SAFE_INTEGER));
+}
+
+/** Media del total de estadísticas base disponible por Pokémon cargado. */
 export function calculateAverageBaseStats(pokemonList) {
   const totals = (Array.isArray(pokemonList) ? pokemonList : [])
     .map((pokemon) => Object.values(pokemon?.stats ?? {}).filter(isFiniteNumber))

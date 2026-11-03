@@ -1,18 +1,27 @@
 # PokéDex Explorer
 
-PokéDex Explorer es una guía web para descubrir Pokémon mediante tarjetas con ilustración, número de Pokédex, tipos, medidas y estadísticas base. Permite buscar por nombre o número, filtrar por tipo, ordenar por número o nombre, guardar Pokémon favoritos y ampliar la colección con carga incremental. Los favoritos se conservan entre sesiones y se sincronizan entre pestañas; los indicadores resumen los Pokémon descargados en esta sesión.
+PokéDex Explorer es una guía web para descubrir Pokémon. Presenta tarjetas con ilustración, número de Pokédex, tipos, medidas y estadísticas base. Está construida con React 19 y conserva la API, la caché y el diseño del proyecto anterior.
+
+## Funcionalidades
+
+- Carga paginada de Pokémon desde PokéAPI, con acción para cargar más y reintentar si falla una página.
+- Búsqueda por nombre o número, filtro por tipo y orden por número de Pokédex o nombre.
+- Indicadores del total cargado, resultados visibles y media de estadísticas base.
+- Favoritos: se pueden marcar desde cada tarjeta, filtrar en la colección y conservar entre sesiones.
+- Sincronización de favoritos entre pestañas del mismo navegador.
+- Diseño adaptable, controles accesibles, estados vacíos y marcadores cuando faltan datos o imágenes.
+
+La búsqueda, los filtros y las estadísticas se aplican a los Pokémon cargados en la sesión; no consultan todo el catálogo. Los favoritos guardan identificadores localmente y el filtro muestra los que pertenecen a las páginas ya cargadas.
 
 ## Tecnologías
 
-- **HTML y CSS**: estructura semántica, controles accesibles y diseño adaptable a móvil y escritorio.
-- **React 19**: interfaz construida con componentes y estado; conserva la API, caché y reglas de datos de la misión anterior.
-- **JavaScript moderno con módulos ES**: mantiene separadas las peticiones y reglas de datos.
-- **Vite**: servidor local de desarrollo y compilador para producción.
-- **@vitejs/plugin-react**: transformación JSX y soporte de React Fast Refresh durante el desarrollo.
-- **PokéAPI**: API pública que proporciona listados y detalles de Pokémon.
-- **Node.js `node:test`**: pruebas integradas, sin dependencias de testing adicionales.
+- React 19 y React DOM 19 para la interfaz y el estado.
+- Vite 6 y `@vitejs/plugin-react` para desarrollo, JSX y compilación.
+- JavaScript con módulos ES y CSS adaptable.
+- PokéAPI como fuente de datos pública.
+- `node:test` para las pruebas automatizadas, sin dependencias de testing adicionales.
 
-## Requisitos e instalación
+## Instalación y ejecución
 
 Se requiere Node.js 20.19+ o 22.12+ y npm.
 
@@ -21,78 +30,94 @@ npm install
 npm run dev
 ```
 
-Vite imprime la URL local del servidor. Para generar y revisar la versión de producción:
+Abre en el navegador la dirección local que muestra Vite. No abras `index.html` directamente como archivo: React necesita que Vite sirva los módulos.
+
+Para comprobar las pruebas y generar una compilación de producción:
 
 ```bash
+npm test
 npm run build
 npm run preview
 ```
 
-Ejecuta las pruebas automatizadas con:
-
-```bash
-npm test
-```
-
-## Estructura del proyecto
+## Organización de archivos
 
 ```text
 index.html
+vite.config.js
+package.json
+package-lock.json
 src/
+  main.jsx                    Punto de entrada de React y estilos
+  App.jsx                     Estado compartido, datos y efectos de la aplicación
   api/
-    pokemonApi.js       Peticiones HTTP, validación y solicitudes compartidas
-    pokemonCache.js     Caché localStorage, TTL e invalidación
+    pokemonApi.js             Peticiones, validación y solicitudes compartidas
+    pokemonCache.js           Caché de API en localStorage, TTL e invalidación
   logic/
-    pokemonLogic.js     Normalización, filtros, orden y estadísticas
-  components/
-    PokemonCard.jsx     Tarjeta reutilizable de cada Pokémon
-    SiteHeader.jsx      Cabecera y marca
-    HeroSection.jsx     Presentación visual
-    Explorer.jsx        Composición de controles, resumen y resultados
-    ExplorerControls.jsx Búsqueda, filtros y orden
-    PokemonSummary.jsx  Indicadores de la colección
-    PokemonResults.jsx  Estado de carga y tarjetas de resultados
-    LoadControls.jsx    Carga incremental y reintento
-    SiteFooter.jsx      Pie de página
+    pokemonLogic.js           Normalización, filtros, orden y estadísticas
   hooks/
-    useLocalStorage.js  Persistencia de estado y sincronización entre pestañas
-  App.jsx               Estado, datos y coordinación de eventos
-  main.jsx              Punto de entrada de React y carga de estilos
+    useLocalStorage.js         Estado persistente y sincronizado entre pestañas
+  components/
+    Explorer.jsx              Composición de la sección principal
+    ExplorerControls.jsx      Búsqueda, filtros y orden
+    PokemonSummary.jsx         Indicadores calculados
+    PokemonResults.jsx         Estado de carga y resultados
+    PokemonCard.jsx            Tarjeta y acción de favoritos
+    LoadControls.jsx           Carga incremental y reintento
+    HeroSection.jsx            Presentación
+    SiteHeader.jsx             Cabecera
+    SiteFooter.jsx             Pie de página
   styles/
-    main.css            Estilos responsive y estados visuales
-vite.config.js          Configuración de Vite y plugin de React
+    main.css                  Estilos responsive
 test/
-  pokemonApi.test.js    Caché, API y casos de error
-  pokemonLogic.test.js  Transformaciones, filtros y agregados
-public/                 Recursos estáticos servidos por Vite
+  pokemonApi.test.js
+  pokemonLogic.test.js
+public/
+  Recursos estáticos
 ```
 
-## API y flujo de datos
+## Decisiones técnicas
 
-La aplicación usa la API pública `https://pokeapi.co/api/v2/` sin clave:
+- `App` mantiene el estado compartido de búsqueda, tipo, orden, páginas y favoritos. Los componentes reciben valores y acciones por props; los conteos, tipos, medias y resultados filtrados se calculan a partir de ese estado, sin guardarlos otra vez.
+- `useEffect` se reserva para sincronización externa: iniciar la carga de datos, registrar el atajo de teclado, persistir favoritos y escuchar cambios de `localStorage`. Los listeners se eliminan al desmontar. La carga inicial tiene una función estable y evita actualizar estado si el componente ya se desmontó.
+- `useLocalStorage` lee el valor inicial de forma diferida, guarda los cambios y escucha el evento `storage` para reflejar modificaciones de otra pestaña. Si el almacenamiento no está disponible, la interfaz sigue funcionando durante la sesión.
+- `pokemonApi.js` y `pokemonCache.js` no dependen de React. Las peticiones idénticas comparten una promesa y las respuestas válidas se guardan por 24 horas.
+- Cada página se añade cuando han terminado todas sus peticiones de detalle. Así se evita presentar una página incompleta como si estuviera completa; en caso de error, se puede reintentar sin duplicar tarjetas.
+- Las listas usan claves basadas en identificador o nombre normalizado del Pokémon; los tipos y estadísticas usan claves únicas dentro de sus listas.
 
-- `GET /pokemon?limit=12&offset=0` obtiene una página de referencias.
-- `GET /pokemon/{id-o-nombre}/` obtiene los detalles usados en las tarjetas.
+## Uso de IA
 
-`pokemonApi.js` usa `fetch` con `async/await`, comprueba `response.ok` y valida el JSON y los campos requeridos. `main.js` coordina las peticiones de detalle, comunica carga y errores a la interfaz y permite reintentar. Una página se incorpora solo cuando todas sus peticiones de detalle han terminado correctamente; así se evita presentar resultados parciales como una página completa. La carga incremental conserva las tarjetas anteriores y evita duplicados.
+**Herramienta utilizada:** Codex en ChatGPT como asistente de programación. No se utilizó otra herramienta de IA en los cambios documentados aquí.
 
-`pokemonLogic.js` transforma los detalles con `map`, filtra por nombre, número y tipo con `filter`, y calcula con `reduce` la media del total de estadísticas base disponibles por Pokémon. Estos filtros y estadísticas abarcan únicamente los Pokémon cargados.
+**Partes desarrolladas con apoyo de IA:** adaptación a React 19 y Vite, componentes JSX, flujo de estado y efectos, favoritos y el hook de `localStorage`, además de esta documentación. La aplicación anterior ya existía en el repositorio antes de estas fases.
 
-Los errores de red, HTTP, JSON inválido y respuestas incompletas se propagan desde la API hasta el coordinador, que muestra un mensaje y una acción de reintento. Si faltan campos opcionales como imagen, tipo o estadística, la tarjeta muestra un marcador de ausencia en vez de fallar.
+**Extractos textuales de prompts reales de esta conversación:**
 
-## Caché
+> “Mantener el diseño y las funcionalidades originales. No elimines funcionalidades existentes ni reconstruyas la aplicación sin necesidad.”
 
-Se guardan las páginas del listado, con claves por `limit` y `offset`, y los detalles solicitados, con una clave por identificador normalizado. El TTL predeterminado es de **24 horas**, configurable mediante `POKEMON_CACHE_TTL_MS` en `src/api/pokemonCache.js`. Las solicitudes idénticas que coinciden comparten una promesa. Respuestas HTTP fallidas o datos inválidos no se guardan.
+> “No utilices useEffect para calcular valores que puedan derivarse directamente del estado.”
 
-La caché se limita al almacenamiento del navegador actual; no ofrece sincronización entre dispositivos ni funcionamiento offline garantizado. Si `localStorage` está bloqueado, corrupto o lleno, la app omite la caché, intenta descartar entradas antiguas si hay una cuota agotada y continúa con la petición de red. Las instrucciones para probar e invalidar las entradas están en [README-cache.md](README-cache.md); `clearPokemonCache()` elimina solo las claves propias de la aplicación.
+**Comprobación del código:** se ejecutaron `npm test` (10 pruebas aprobadas), `npm run build` y comprobaciones HTTP de las rutas servidas por Vite. La compilación transforma correctamente los componentes JSX.
 
-## Limitaciones conocidas
+**Partes manuales y procedencia:** los módulos de API, caché, lógica, estilos y pruebas de la misión anterior estaban en el proyecto antes de estas fases y se conservaron. El historial disponible no identifica quién escribió manualmente esa base; por tanto, no se le atribuye autoría manual a ninguna persona. En las fases documentadas aquí no puedo confirmar una contribución nueva independiente de Codex: los cambios de React indicados arriba se implementaron con su asistencia.
 
-- La búsqueda y el filtro no son globales: solo examinan los Pokémon que ya se han cargado. Usa **Cargar más Pokémon** para ampliar ese conjunto.
-- Se necesita conexión y disponibilidad de PokéAPI para obtener datos que no estén en caché. La caché caducada no sustituye una respuesta de red fallida.
-- Si falla un detalle de la página, se ofrece reintentar la página; no se conserva una página parcial.
-- Las ilustraciones se cargan desde las URL proporcionadas por PokéAPI y pueden no estar disponibles para todos los registros.
+## Autopsia
 
-## Uso de herramientas de IA
+### 1. Cargar cada página como una unidad
 
-Se ha utilizado **Codex** como herramienta de asistencia al desarrollo. El código generado debe revisarse, probarse y comprenderse por quien lo utilice; esta declaración no presupone ni atribuye políticas específicas de la universidad.
+La aplicación solicita los detalles de una página en paralelo con `Promise.all` y solo incorpora la página cuando todas las solicitudes terminan correctamente. Se eligió para evitar resultados parciales y hacer que el botón de reintento opere sobre una página completa. La alternativa descartada era añadir tarjetas a medida que terminara cada petición; habría requerido gestionar fallos parciales, reintentos individuales y posibles duplicados.
+
+### 2. Guardar favoritos en el navegador
+
+Los favoritos se guardan en `localStorage` mediante un hook propio y se sincronizan con el evento `storage`. Se eligió porque ofrece persistencia entre sesiones sin requerir cuentas ni un servidor adicional. La alternativa de mantenerlos solo en estado React los perdería al recargar; una API remota necesitaría backend y gestión de usuarios, que el proyecto no tiene. Para esta aplicación pequeña, un hook evita añadir una biblioteca de estado global.
+
+## Repositorio y comprobaciones
+
+`.gitignore` excluye `node_modules/`, `dist/` y `build/`, además de cachés, archivos de entorno y logs de npm. Esas carpetas no están versionadas. El historial conserva los commits anteriores y contiene más de cinco commits de desarrollo.
+
+Para repetir las comprobaciones:
+
+```bash
+npm test
+npm run build
+```

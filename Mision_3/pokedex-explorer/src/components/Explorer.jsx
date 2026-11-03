@@ -1,0 +1,68 @@
+import ExplorerControls from './ExplorerControls.jsx';
+import LoadControls from './LoadControls.jsx';
+import PokemonResults from './PokemonResults.jsx';
+import PokemonSummary from './PokemonSummary.jsx';
+
+export default function Explorer({
+  search,
+  onSearchChange,
+  searchRef,
+  type,
+  types,
+  onTypeChange,
+  sort,
+  onSortChange,
+  items,
+  visiblePokemon,
+  averageStats,
+  status,
+  isLoading,
+  showInitialLoading,
+  loadFailed,
+  hasMore,
+  onClearFilters,
+  onLoadMore,
+  onRetry,
+}) {
+  return (
+    <section className="explorer" id="explorer" aria-labelledby="explorer-title">
+      <div className="section-intro">
+        <div><p className="eyebrow"><span>02</span> · REGISTRO NACIONAL</p><h2 id="explorer-title">Explora la Pokédex</h2></div>
+        <span className="loaded-scope">MOSTRANDO LOS CARGADOS</span>
+      </div>
+      <ExplorerControls
+        search={search}
+        onSearchChange={onSearchChange}
+        searchRef={searchRef}
+        type={type}
+        types={types}
+        onTypeChange={onTypeChange}
+        sort={sort}
+        onSortChange={onSortChange}
+      />
+      <PokemonSummary
+        loadedCount={items.length}
+        resultCount={visiblePokemon.length}
+        averageStats={averageStats}
+        showInitialLoading={showInitialLoading}
+      />
+      <PokemonResults
+        items={items}
+        visiblePokemon={visiblePokemon}
+        status={status}
+        isLoading={isLoading}
+        showInitialLoading={showInitialLoading}
+        loadFailed={loadFailed}
+        onClearFilters={onClearFilters}
+      />
+      <LoadControls
+        hasMore={hasMore}
+        loadFailed={loadFailed}
+        isLoading={isLoading}
+        loadedCount={items.length}
+        onLoadMore={onLoadMore}
+        onRetry={onRetry}
+      />
+    </section>
+  );
+}

@@ -46,7 +46,15 @@ src/
     pokemonLogic.js     Normalización, filtros, orden y estadísticas
   components/
     PokemonCard.jsx     Tarjeta reutilizable de cada Pokémon
-  App.jsx               Interfaz, estado, eventos y coordinación
+    SiteHeader.jsx      Cabecera y marca
+    HeroSection.jsx     Presentación visual
+    Explorer.jsx        Composición de controles, resumen y resultados
+    ExplorerControls.jsx Búsqueda, filtros y orden
+    PokemonSummary.jsx  Indicadores de la colección
+    PokemonResults.jsx  Estado de carga y tarjetas de resultados
+    LoadControls.jsx    Carga incremental y reintento
+    SiteFooter.jsx      Pie de página
+  App.jsx               Estado, datos y coordinación de eventos
   main.jsx              Punto de entrada de React y carga de estilos
   styles/
     main.css            Estilos responsive y estados visuales

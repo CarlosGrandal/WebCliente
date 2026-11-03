@@ -3,7 +3,7 @@ import PokemonCard from './PokemonCard.jsx';
 export default function PokemonResults({
   items,
   visiblePokemon,
-  status,
+  statusMessage,
   isLoading,
   showInitialLoading,
   loadFailed,
@@ -17,8 +17,8 @@ export default function PokemonResults({
           {showInitialLoading ? 'Cargando datos…' : `${visiblePokemon.length} de ${items.length} cargados`}
         </span>
       </div>
-      <p className={`status-message${status.error ? ' is-error' : ''}${status.loading ? ' is-loading' : ''}`} role="status" aria-live="polite" aria-atomic="true">
-        {status.loading && <span className="loading-spinner" aria-hidden="true" />}{status.message}
+      <p className={`status-message${loadFailed ? ' is-error' : ''}${isLoading ? ' is-loading' : ''}`} role="status" aria-live="polite" aria-atomic="true">
+        {isLoading && <span className="loading-spinner" aria-hidden="true" />}{statusMessage}
       </p>
       <div className="pokemon-grid" aria-label="Resultados de Pokémon" aria-busy={isLoading}>
         {showInitialLoading ? (

@@ -15,7 +15,7 @@ export default function Explorer({
   items,
   visiblePokemon,
   averageStats,
-  status,
+  statusMessage,
   isLoading,
   showInitialLoading,
   loadFailed,
@@ -49,7 +49,7 @@ export default function Explorer({
       <PokemonResults
         items={items}
         visiblePokemon={visiblePokemon}
-        status={status}
+        statusMessage={statusMessage}
         isLoading={isLoading}
         showInitialLoading={showInitialLoading}
         loadFailed={loadFailed}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getPokemonDetails, getPokemonList } from './api/pokemonApi.js';
 import {
   calculateAverageBaseStats,
@@ -14,6 +14,15 @@ import SiteHeader from './components/SiteHeader.jsx';
 
 const PAGE_SIZE = 12;
 
+function appendUniquePokemon(currentPokemon, newPokemon) {
+  const uniqueItems = new Map(currentPokemon.map((pokemon) => [pokemon.id ?? pokemon.name, pokemon]));
+  newPokemon.forEach((pokemon) => {
+    const key = pokemon.id ?? pokemon.name;
+    if (key !== '' && !uniqueItems.has(key)) uniqueItems.set(key, pokemon);
+  });
+  return [...uniqueItems.values()];
+}
+
 export default function App() {
   const [items, setItems] = useState([]);
   const [nextOffset, setNextOffset] = useState(0);
@@ -23,16 +32,16 @@ export default function App() {
   const [search, setSearch] = useState('');
   const [type, setType] = useState('');
   const [sort, setSort] = useState('id');
-  const [status, setStatus] = useState({ message: 'Conectando con PokéAPI…', loading: true, error: false });
+  const [statusMessage, setStatusMessage] = useState('Conectando con PokéAPI…');
   const loadingRef = useRef(false);
   const searchRef = useRef(null);
 
-  const visiblePokemon = useMemo(() => sortPokemon(
+  const visiblePokemon = sortPokemon(
     filterPokemon(items, { search, type }),
     sort,
-  ), [items, search, type, sort]);
-  const types = useMemo(() => getAvailableTypes(items), [items]);
-  const averageStats = useMemo(() => calculateAverageBaseStats(items), [items]);
+  );
+  const types = getAvailableTypes(items);
+  const averageStats = calculateAverageBaseStats(items);
 
   const loadNextPage = useCallback(async ({ retry = false } = {}) => {
     if (loadingRef.current) return;
@@ -42,43 +51,25 @@ export default function App() {
     loadingRef.current = true;
     setIsLoading(true);
     setFailedOffset(null);
-    setStatus({
-      message: initialLoad ? 'Conectando con PokéAPI…' : 'Cargando más Pokémon…',
-      loading: true,
-      error: false,
-    });
+    setStatusMessage(initialLoad ? 'Conectando con PokéAPI…' : 'Cargando más Pokémon…');
 
     try {
       const page = await getPokemonList({ limit: PAGE_SIZE, offset });
       const details = await Promise.all(page.results.map(({ name }) => getPokemonDetails(name)));
       const newPokemon = normalizePokemonList(details);
-      setItems((current) => {
-        const uniqueItems = new Map(current.map((pokemon) => [pokemon.id ?? pokemon.name, pokemon]));
-        newPokemon.forEach((pokemon) => {
-          const key = pokemon.id ?? pokemon.name;
-          if (key !== '' && !uniqueItems.has(key)) uniqueItems.set(key, pokemon);
-        });
-        return [...uniqueItems.values()];
-      });
+      const updatedItems = appendUniquePokemon(items, newPokemon);
+      setItems(updatedItems);
       setNextOffset(offset + page.results.length);
       setHasMore(typeof page.next === 'string' && page.results.length > 0);
-      setStatus({
-        message: `${items.length + newPokemon.length} Pokémon cargados. Puedes seguir ampliando la selección.`,
-        loading: false,
-        error: false,
-      });
+      setStatusMessage(`${updatedItems.length} Pokémon cargados. Puedes seguir ampliando la selección.`);
     } catch (error) {
       setFailedOffset(offset);
-      setStatus({
-        message: error instanceof Error ? error.message : 'No se pudieron cargar los Pokémon.',
-        loading: false,
-        error: true,
-      });
+      setStatusMessage(error instanceof Error ? error.message : 'No se pudieron cargar los Pokémon.');
     } finally {
       loadingRef.current = false;
       setIsLoading(false);
     }
-  }, [failedOffset, items.length, nextOffset]);
+  }, [failedOffset, items, nextOffset]);
 
   useEffect(() => {
     loadNextPage();
@@ -119,7 +110,7 @@ export default function App() {
         items={items}
         visiblePokemon={visiblePokemon}
         averageStats={averageStats}
-        status={status}
+        statusMessage={statusMessage}
         isLoading={isLoading}
         showInitialLoading={showInitialLoading}
         loadFailed={loadFailed}

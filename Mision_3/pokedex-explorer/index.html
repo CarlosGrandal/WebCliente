@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f5ef" />
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <meta name="description" content="Explora Pokémon con PokéDex Explorer y los datos públicos de PokéAPI." />
+    <title>PokéDex Explorer · Tu guía Pokémon</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="PokéDex Explorer, inicio">
+          <span class="brand-ball" aria-hidden="true"><i></i></span>
+          <span class="brand-copy"><strong>PokéDex</strong><small>FIELD GUIDE</small></span>
+        </a>
+        <span class="data-source"><i aria-hidden="true"></i> DATOS EN DIRECTO · POKÉAPI</span>
+      </header>
+
+      <section class="hero" id="inicio" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>01</span> · GUÍA DE CAMPO DIGITAL</p>
+          <h1 id="page-title">Un mundo lleno<br />de <em>Pokémon.</em></h1>
+          <p class="hero-description">Consulta sus tipos, medidas y estadísticas. Tu próxima aventura empieza por conocerlos.</p>
+          <a class="hero-link" href="#explorer">Abrir la Pokédex <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <span class="hero-spark spark-one">✳</span><span class="hero-spark spark-two">✦</span>
+          <span class="hero-disc"><span class="hero-disc-inner"><span class="hero-disc-band"></span><span class="hero-disc-button"></span></span></span>
+          <span class="hero-art-label">N.º 001 — ∞</span>
+        </div>
+        <div class="hero-index" aria-hidden="true">POKÉDEX / 2026</div>
+      </section>
+
+      <section class="explorer" id="explorer" aria-labelledby="explorer-title">
+        <div class="section-intro">
+          <div><p class="eyebrow"><span>02</span> · REGISTRO NACIONAL</p><h2 id="explorer-title">Explora la Pokédex</h2></div>
+          <span class="loaded-scope">MOSTRANDO LOS CARGADOS</span>
+        </div>
+
+        <div class="control-panel">
+          <div class="toolbar">
+            <label class="search-field" for="pokemon-search">
+              <span class="control-icon" aria-hidden="true">⌕</span>
+              <span class="visually-hidden">Buscar Pokémon por nombre</span>
+              <input id="pokemon-search" type="search" placeholder="Busca un Pokémon…" autocomplete="off" />
+              <kbd aria-hidden="true">⌘ K</kbd>
+            </label>
+            <label class="select-field" for="type-filter"><span class="select-label">TIPO</span>
+              <select id="type-filter"><option value="">Todos los tipos</option></select>
+            </label>
+            <label class="select-field sort-field" for="sort-order"><span class="select-label">ORDENAR</span>
+              <select id="sort-order"><option value="id">Número Pokédex</option><option value="name">Nombre A–Z</option></select>
+            </label>
+          </div>
+          <p class="scope-note"><span aria-hidden="true">ⓘ</span> La búsqueda, el filtro y el orden se aplican a los Pokémon cargados hasta ahora.</p>
+        </div>
+
+        <div class="summary-grid" aria-live="polite" aria-atomic="true">
+          <article class="summary-card summary-card-primary"><span class="summary-mark" aria-hidden="true">◉</span><div><span class="summary-label">EN ESTA POKÉDEX</span><strong id="loaded-count">—</strong><small>Pokémon cargados</small></div></article>
+          <article class="summary-card"><span class="summary-mark summary-mark-leaf" aria-hidden="true">✳</span><div><span class="summary-label">COINCIDENCIAS</span><strong id="result-count">—</strong><small>Con los filtros actuales</small></div></article>
+          <article class="summary-card"><span class="summary-mark summary-mark-sun" aria-hidden="true">↗</span><div><span class="summary-label">MEDIA DE STATS BASE</span><strong id="average-stat">—</strong><small>Total medio por Pokémon</small></div></article>
+        </div>
+
+        <div class="results-heading"><div><p class="eyebrow">TU COLECCIÓN</p><h3>Pokémon descubiertos</h3></div><span id="collection-caption" class="collection-caption">Cargando datos…</span></div>
+        <p id="status-message" class="status-message" role="status" aria-live="polite" aria-atomic="true"><span class="loading-spinner" aria-hidden="true"></span> Conectando con PokéAPI…</p>
+        <div id="pokemon-grid" class="pokemon-grid" aria-label="Resultados de Pokémon" aria-busy="true"></div>
+        <div class="load-controls">
+          <button id="load-more" class="load-button" type="button" hidden>Cargar más Pokémon <span aria-hidden="true">↓</span></button>
+          <button id="retry-load" class="retry-button" type="button" hidden>Reintentar carga</button>
+          <span id="end-message" class="end-message" hidden>Has llegado al final de la Pokédex cargable.</span>
+        </div>
+      </section>
+
+      <footer class="site-footer"><span>PokéDex Explorer <i>·</i> Proyecto académico</span><span>Datos proporcionados por <a href="https://pokeapi.co/" target="_blank" rel="noreferrer">PokéAPI ↗</a></span></footer>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -15,6 +15,11 @@ export default function Explorer({
   items,
   visiblePokemon,
   averageStats,
+  favoriteIds,
+  loadedFavoriteCount,
+  showFavoritesOnly,
+  onShowFavoritesOnlyChange,
+  onToggleFavorite,
   statusMessage,
   isLoading,
   showInitialLoading,
@@ -39,6 +44,9 @@ export default function Explorer({
         onTypeChange={onTypeChange}
         sort={sort}
         onSortChange={onSortChange}
+        loadedFavoriteCount={loadedFavoriteCount}
+        showFavoritesOnly={showFavoritesOnly}
+        onShowFavoritesOnlyChange={onShowFavoritesOnlyChange}
       />
       <PokemonSummary
         loadedCount={items.length}
@@ -49,10 +57,13 @@ export default function Explorer({
       <PokemonResults
         items={items}
         visiblePokemon={visiblePokemon}
+        favoriteIds={favoriteIds}
+        onToggleFavorite={onToggleFavorite}
         statusMessage={statusMessage}
         isLoading={isLoading}
         showInitialLoading={showInitialLoading}
         loadFailed={loadFailed}
+        showFavoritesOnly={showFavoritesOnly}
         onClearFilters={onClearFilters}
       />
       <LoadControls

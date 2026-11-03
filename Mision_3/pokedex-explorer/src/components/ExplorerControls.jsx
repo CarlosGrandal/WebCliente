@@ -7,6 +7,9 @@ export default function ExplorerControls({
   onTypeChange,
   sort,
   onSortChange,
+  loadedFavoriteCount,
+  showFavoritesOnly,
+  onShowFavoritesOnlyChange,
 }) {
   return (
     <div className="control-panel">
@@ -39,8 +42,17 @@ export default function ExplorerControls({
             <option value="name">Nombre A–Z</option>
           </select>
         </label>
+        <button
+          className={`favorites-filter${showFavoritesOnly ? ' is-active' : ''}`}
+          type="button"
+          aria-pressed={showFavoritesOnly}
+          onClick={() => onShowFavoritesOnlyChange(!showFavoritesOnly)}
+        >
+          {showFavoritesOnly ? 'Ver todos' : 'Solo favoritos'}
+          <span>{loadedFavoriteCount}</span>
+        </button>
       </div>
-      <p className="scope-note"><span aria-hidden="true">ⓘ</span> La búsqueda, el filtro y el orden se aplican a los Pokémon cargados hasta ahora.</p>
+      <p className="scope-note"><span aria-hidden="true">ⓘ</span> La búsqueda, los filtros y el orden se aplican a los Pokémon cargados hasta ahora.</p>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 # PokéDex Explorer
 
-PokéDex Explorer es una guía web para descubrir Pokémon mediante tarjetas con ilustración, número de Pokédex, tipos, medidas y estadísticas base. Permite buscar por nombre o número, filtrar por tipo, ordenar por número o nombre y ampliar la colección con carga incremental. Los indicadores resumen los Pokémon descargados en esta sesión; búsqueda y filtros no consultan todo el catálogo.
+PokéDex Explorer es una guía web para descubrir Pokémon mediante tarjetas con ilustración, número de Pokédex, tipos, medidas y estadísticas base. Permite buscar por nombre o número, filtrar por tipo, ordenar por número o nombre, guardar Pokémon favoritos y ampliar la colección con carga incremental. Los favoritos se conservan entre sesiones y se sincronizan entre pestañas; los indicadores resumen los Pokémon descargados en esta sesión.
 
 ## Tecnologías
 
@@ -54,6 +54,8 @@ src/
     PokemonResults.jsx  Estado de carga y tarjetas de resultados
     LoadControls.jsx    Carga incremental y reintento
     SiteFooter.jsx      Pie de página
+  hooks/
+    useLocalStorage.js  Persistencia de estado y sincronización entre pestañas
   App.jsx               Estado, datos y coordinación de eventos
   main.jsx              Punto de entrada de React y carga de estilos
   styles/

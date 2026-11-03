@@ -3,10 +3,13 @@ import PokemonCard from './PokemonCard.jsx';
 export default function PokemonResults({
   items,
   visiblePokemon,
+  favoriteIds,
+  onToggleFavorite,
   statusMessage,
   isLoading,
   showInitialLoading,
   loadFailed,
+  showFavoritesOnly,
   onClearFilters,
 }) {
   return (
@@ -26,10 +29,26 @@ export default function PokemonResults({
         ) : items.length === 0 && loadFailed ? null : visiblePokemon.length === 0 ? (
           <div className="empty-state">
             <span className="empty-icon">⌕</span><h4>No hay coincidencias</h4>
-            <p>Prueba con otro nombre o tipo entre los Pokémon cargados.</p>
-            <button className="clear-filters" type="button" onClick={onClearFilters}>Limpiar búsqueda y filtros</button>
+            <p>{showFavoritesOnly
+              ? favoriteIds.length === 0
+                ? 'Marca Pokémon como favoritos con el botón ☆ de cada tarjeta.'
+                : 'No hay favoritos cargados que coincidan. Carga más Pokémon o cambia los filtros.'
+              : 'Prueba con otro nombre o tipo entre los Pokémon cargados.'}</p>
+            <button className="clear-filters" type="button" onClick={onClearFilters}>
+              {showFavoritesOnly ? 'Ver toda la colección' : 'Limpiar búsqueda y filtros'}
+            </button>
           </div>
-        ) : visiblePokemon.map((pokemon) => <PokemonCard key={pokemon.id ?? pokemon.name} pokemon={pokemon} />)}
+        ) : visiblePokemon.map((pokemon) => {
+          const pokemonId = pokemon.id ?? pokemon.name;
+          return (
+            <PokemonCard
+              key={pokemonId}
+              pokemon={pokemon}
+              isFavorite={favoriteIds.includes(pokemonId)}
+              onToggleFavorite={onToggleFavorite}
+            />
+          );
+        })}
       </div>
     </>
   );

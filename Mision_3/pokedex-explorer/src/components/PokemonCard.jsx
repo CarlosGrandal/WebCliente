@@ -7,15 +7,25 @@ const statLabels = [
   ['speed', 'Velocidad'],
 ];
 
-export default function PokemonCard({ pokemon }) {
+export default function PokemonCard({ pokemon, isFavorite, onToggleFavorite }) {
   const firstType = pokemon.types[0];
   const [imageFailed, setImageFailed] = useState(false);
+  const pokemonId = pokemon.id ?? pokemon.name;
 
   return (
     <article className="pokemon-card">
       <div className={`pokemon-picture${firstType ? ` tone-${firstType}` : ''}`}>
         <span className="card-orbit orbit-a" />
         <span className="card-orbit orbit-b" />
+        <button
+          className={`favorite-toggle${isFavorite ? ' is-favorite' : ''}`}
+          type="button"
+          aria-label={isFavorite ? `Quitar a ${pokemon.name} de favoritos` : `Añadir a ${pokemon.name} a favoritos`}
+          aria-pressed={isFavorite}
+          onClick={() => onToggleFavorite(pokemonId)}
+        >
+          {isFavorite ? '★' : '☆'}
+        </button>
         {pokemon.image && !imageFailed ? (
           <img
             src={pokemon.image}

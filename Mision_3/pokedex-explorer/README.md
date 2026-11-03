@@ -5,8 +5,10 @@ PokéDex Explorer es una guía web para descubrir Pokémon mediante tarjetas con
 ## Tecnologías
 
 - **HTML y CSS**: estructura semántica, controles accesibles y diseño adaptable a móvil y escritorio.
-- **JavaScript moderno con módulos ES**: mantiene separadas las peticiones, reglas de datos, caché, renderizado y coordinación de eventos, sin añadir un framework de interfaz.
+- **React 19**: interfaz construida con componentes y estado; conserva la API, caché y reglas de datos de la misión anterior.
+- **JavaScript moderno con módulos ES**: mantiene separadas las peticiones y reglas de datos.
 - **Vite**: servidor local de desarrollo y compilador para producción.
+- **@vitejs/plugin-react**: transformación JSX y soporte de React Fast Refresh durante el desarrollo.
 - **PokéAPI**: API pública que proporciona listados y detalles de Pokémon.
 - **Node.js `node:test`**: pruebas integradas, sin dependencias de testing adicionales.
 
@@ -42,11 +44,13 @@ src/
     pokemonCache.js     Caché localStorage, TTL e invalidación
   logic/
     pokemonLogic.js     Normalización, filtros, orden y estadísticas
-  ui/
-    render.js           Creación y actualización segura del DOM
+  components/
+    PokemonCard.jsx     Tarjeta reutilizable de cada Pokémon
+  App.jsx               Interfaz, estado, eventos y coordinación
+  main.jsx              Punto de entrada de React y carga de estilos
   styles/
     main.css            Estilos responsive y estados visuales
-  main.js               Estado de la aplicación, eventos y coordinación
+vite.config.js          Configuración de Vite y plugin de React
 test/
   pokemonApi.test.js    Caché, API y casos de error
   pokemonLogic.test.js  Transformaciones, filtros y agregados

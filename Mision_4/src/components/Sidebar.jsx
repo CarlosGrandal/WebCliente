@@ -8,7 +8,7 @@ export default function Sidebar({ activePage, onNavigate }) {
     <aside className="sidebar">
       <a className="club-brand" href="#inicio" onClick={(event) => event.preventDefault()} aria-label="Los Chavales FC, inicio">
         <img className="club-crest" src="/images/los-chavales-crest.png" alt="" />
-        <span className="brand-name">LOS CHAVALES <b>FC</b><small>CLUB DE FÚTBOL · MADRID</small></span>
+        <span className="brand-name">LOS CHAVALES <b>FC</b><small>CLUB DE FÚTBOL · LAS ROZAS</small></span>
       </a>
       <div className="sidebar-rule" />
       <p className="nav-label">MENÚ PRINCIPAL</p>
@@ -21,7 +21,7 @@ export default function Sidebar({ activePage, onNavigate }) {
       </nav>
       <div className="sidebar-bottom">
         <div className="sidebar-motto">Perder, perder y perder</div>
-        <div className="sidebar-meta"><span className="sidebar-star">✳</span><span>MADRID, ESPAÑA<br />FUNDADO EN 2014</span></div>
+        <div className="sidebar-meta"><span className="sidebar-star">✳</span><span>LAS ROZAS, ESPAÑA<br />FUNDADO EN 2021</span></div>
       </div>
     </aside>
   )

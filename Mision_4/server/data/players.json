@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "25aa11ef-c76d-4180-ac49-d89595714bb7",
+    "nombre": "nacho",
+    "apellido": "oya",
+    "dni": "12345678Z",
+    "dorsal": 1,
+    "fechaNacimiento": "2026-11-17",
+    "posicion": "Centrocampista",
+    "createdAt": "2026-11-17T20:44:34.405Z"
+  },
+  {
+    "id": "31c7c2d1-8592-4592-b56d-e0d12f484e32",
+    "nombre": "Carlos",
+    "apellido": "Grandal",
+    "dni": "54536336R",
+    "dorsal": 30,
+    "fechaNacimiento": "2005-11-22",
+    "posicion": "Delantero",
+    "createdAt": "2026-11-17T20:29:58.242Z"
+  }
+]

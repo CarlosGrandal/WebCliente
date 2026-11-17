@@ -191,3 +191,77 @@ h1 { margin: 14px 0 8px; color: var(--club-blue-deep); font: 400 clamp(31px, 3vw
   .club-masthead { padding-inline: 18px; }
   .masthead-season { font-size: 7px; }
 }
+/* Formación visual de fútbol 7 */
+.roster-formation-layout { display: grid; grid-template-columns: minmax(0,1fr) 280px; align-items: start; gap: 22px; }
+.roster-field-column { min-width: 0; }
+.roster-empty-banner { display: flex; align-items: center; gap: 13px; margin: 0 0 17px; padding: 11px 16px; border: 1px solid #dce4f4; border-radius: 5px; background: #f3f6fc; }
+.roster-empty-banner img { display: block; width: 42px; height: 42px; object-fit: contain; border-radius: 3px; background: var(--club-blue); }
+.roster-empty-banner p { margin: 0; color: var(--club-blue-deep); font-size: 13px; font-weight: 650; }
+.formation-section { min-width: 0; }
+.formation-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 auto 12px; max-width: 690px; }
+.formation-heading h2 { margin: 7px 0 0; color: var(--club-blue-deep); font: 21px Georgia,serif; }
+.formation-caption { padding: 7px 10px; color: #586d9e; border: 1px solid #dfe5f1; border-radius: 3px; background: #f6f8fc; font-size: 10px; font-weight: 750; letter-spacing: 1px; }
+.football-pitch { position: relative; display: grid; width: min(100%, 690px); min-height: 590px; grid-template-rows: repeat(4,1fr); gap: 2px; overflow: hidden; margin: 0 auto; padding: 34px 24px; border: 5px solid #e9edf2; border-radius: 12px; background: repeating-linear-gradient(90deg,#31784e 0,#31784e 12.5%,#368254 12.5%,#368254 25%); box-shadow: 0 12px 28px rgba(20,41,42,.12); }
+.football-pitch::before { position: absolute; z-index: 0; inset: 12px; border: 2px solid rgba(255,255,255,.75); border-radius: 5px; content: ''; pointer-events: none; }
+.football-pitch::after { position: absolute; z-index: 0; top: 50%; left: 50%; width: 126px; height: 126px; border: 2px solid rgba(255,255,255,.72); border-radius: 50%; content: ''; transform: translate(-50%,-50%); pointer-events: none; }
+.pitch-center-line { position: absolute; z-index: 0; top: 50%; right: 12px; left: 12px; height: 2px; background: rgba(255,255,255,.72); transform: translateY(-50%); pointer-events: none; }
+.pitch-marking { position: absolute; z-index: 0; left: 50%; width: 43%; height: 58px; border: 2px solid rgba(255,255,255,.7); transform: translateX(-50%); pointer-events: none; }
+.pitch-marking-top { top: 12px; border-top: 0; }
+.pitch-marking-bottom { bottom: 12px; border-bottom: 0; }
+.pitch-row { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: clamp(14px,5vw,55px); }
+.pitch-row-midfield { justify-content: space-evenly; }
+.pitch-row-defence { gap: clamp(35px,10vw,120px); }
+.position-slot { display: flex; width: clamp(76px,10vw,98px); height: clamp(76px,10vw,98px); flex: 0 0 auto; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 7px; color: #fff; border: 2px solid rgba(255,255,255,.92); border-radius: 50%; background: rgba(31,52,86,.92); box-shadow: 0 4px 12px rgba(0,0,0,.2); text-align: center; transition: background .16s,transform .16s,box-shadow .16s; }
+.position-slot:hover, .position-slot:focus-visible { background: #24396e; box-shadow: 0 0 0 4px rgba(255,255,255,.28),0 5px 16px rgba(0,0,0,.24); transform: translateY(-2px); }
+.position-slot:focus-visible { outline: 3px solid #f1d38c; outline-offset: 3px; }
+.position-slot-active { color: #1c2d27; border-color: #f3d58b; background: #f5edcf; }
+.position-slot-active:hover { background: #f5edcf; }
+.slot-name { font-size: 11px; font-weight: 800; line-height: 1.15; }
+.slot-count { color: rgba(255,255,255,.82); font-size: 8px; line-height: 1.2; }
+.position-slot-active .slot-count { color: #716039; }
+.position-player-dropdown { position: relative; z-index: 3; grid-row: 1; max-height: min(42vh,350px); overflow-y: auto; margin: 0; padding: 16px; border: 1px solid #dfe5f1; border-radius: 5px; background: #fff; box-shadow: 0 8px 24px rgba(24,43,87,.12); }
+.position-dropdown-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #edf0f5; }
+.position-dropdown-heading .eyebrow { color: #7889b0; font-size: 8px; }
+.position-dropdown-heading h3 { margin: 5px 0 0; color: var(--club-blue-deep); font: 21px Georgia,serif; }
+.close-dropdown { display: grid; width: 32px; height: 32px; place-items: center; color: #586887; border: 1px solid #e2e6ef; border-radius: 50%; background: #f8f9fc; font-size: 21px; line-height: 1; }
+.close-dropdown:hover { color: var(--club-blue); background: #edf1fa; }
+.position-player-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.position-empty { margin: 0; padding: 18px; color: #78829a; border-radius: 4px; background: #f5f7fb; font-size: 12px; text-align: center; }
+.position-player-dropdown .player-card { padding: 14px; }
+.position-player-dropdown .player-card h2 { margin: 12px 0 10px; font-size: 18px; }
+.roster-side-column { position: sticky; top: 20px; display: grid; grid-template-rows: minmax(0,1fr) auto; align-self: stretch; gap: 15px; min-width: 0; }
+.coach-bench { position: relative; grid-row: 2; align-self: end; width: 100%; margin: 0; padding: 0 7px; }
+.bench-title { margin: 0 0 19px; color: #71809e; font-size: 9px; font-weight: 800; letter-spacing: 1.6px; text-align: center; }
+.bench-shelter { position: relative; padding: 17px 9px 11px; border: 2px solid #b9c3d4; border-top: 0; border-radius: 4px 4px 8px 8px; background: linear-gradient(180deg,#e7ebf3 0%,#d8deea 100%); box-shadow: 0 8px 13px rgba(24,43,87,.14); }
+.bench-roof { position: absolute; top: -12px; right: -7px; left: -7px; height: 11px; border: 1px solid #1b2b58; border-radius: 5px 5px 2px 2px; background: var(--club-blue); box-shadow: 0 3px 0 rgba(16,31,67,.18); }
+.bench-backrest { height: 23px; border: 1px solid #aeb8cb; border-radius: 3px 3px 0 0; background: repeating-linear-gradient(90deg,#d1d8e6 0,#d1d8e6 18px,#e3e7ef 18px,#e3e7ef 20px); }
+.bench-seat { display: flex; min-height: 63px; align-items: center; gap: 9px; margin-top: 8px; padding: 8px; border: 1px solid #d5dbe6; border-radius: 3px; background: #fff; }
+.bench-seat img { display: block; width: 39px; height: 39px; flex: 0 0 auto; object-fit: contain; border-radius: 2px; background: var(--club-blue); }
+.bench-seat div { display: grid; gap: 4px; min-width: 0; }
+.bench-seat span { color: #7b87a0; font-size: 8px; font-weight: 750; letter-spacing: 1px; }
+.bench-seat strong { color: var(--club-blue-deep); font: 15px Georgia,serif; }
+.bench-base { height: 6px; margin-top: 9px; border-radius: 2px; background: #24396e; }
+.bench-supports { display: flex; justify-content: space-around; height: 23px; padding: 0 19px; }
+.bench-supports span { width: 5px; height: 23px; background: #7889a4; }
+@media (max-width: 900px) {
+  .roster-formation-layout { grid-template-columns: minmax(0,1fr) 260px; gap: 14px; }
+  .football-pitch { min-height: 540px; padding-inline: 14px; }
+  .roster-side-column { top: 14px; }
+  .coach-bench { width: 100%; padding-inline: 3px; }
+  .bench-seat { gap: 6px; padding: 6px; }
+  .bench-seat img { width: 34px; height: 34px; }
+  .bench-seat strong { font-size: 13px; }
+}
+@media (max-width: 680px) {
+  .roster-formation-layout { grid-template-columns: 1fr; }
+  .roster-side-column { position: static; display: grid; align-self: auto; gap: 15px; min-height: 0; }
+  .position-player-dropdown { position: relative; grid-row: auto; top: auto; right: auto; left: auto; max-height: min(45vh,400px); }
+  .coach-bench { position: relative; grid-row: auto; top: auto; transform: none; }
+  .coach-bench { width: min(100%,280px); margin: 16px auto 0; padding: 0 12px; }
+  .football-pitch { min-height: 500px; padding: 27px 10px; border-width: 4px; }
+  .position-slot { width: clamp(67px,19vw,84px); height: clamp(67px,19vw,84px); }
+  .slot-name { font-size: 10px; }
+  .slot-count { font-size: 7px; }
+  .pitch-row-midfield { gap: 8px; }
+  .pitch-row-defence { gap: 30px; }
+}

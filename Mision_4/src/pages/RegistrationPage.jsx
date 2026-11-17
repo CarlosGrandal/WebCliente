@@ -4,8 +4,8 @@ import { playerPositions, playerSchema } from '../schemas/playerSchema.js'
 import { useCreatePlayer } from '../hooks/useCreatePlayer.js'
 
 const fields = [
-  { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Alejandro', autoComplete: 'given-name' },
-  { name: 'apellido', label: 'Apellido', type: 'text', placeholder: 'Ej. García', autoComplete: 'family-name' },
+  { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Carlos', autoComplete: 'given-name' },
+  { name: 'apellido', label: 'Apellido', type: 'text', placeholder: 'Ej. Grandal', autoComplete: 'family-name' },
   { name: 'dni', label: 'DNI', type: 'text', placeholder: '12345678Z', autoComplete: 'off', maxLength: 9 },
   { name: 'dorsal', label: 'Dorsal', type: 'number', placeholder: 'Ej. 10', inputMode: 'numeric' },
   { name: 'fechaNacimiento', label: 'Fecha de nacimiento', type: 'date', autoComplete: 'bday' },
@@ -125,7 +125,7 @@ export default function RegistrationPage() {
             <div className="welcome-divider" />
             <div className="welcome-season"><span>TEMPORADA</span><strong>2026 <i>/</i> 27</strong></div>
           </div>
-          <div className="welcome-foot">LOS CHAVALES FC <span>·</span> DESDE 2014</div>
+          <div className="welcome-foot">LOS CHAVALES FC <span>·</span> DESDE 2021</div>
         </aside>
       </div>
       <footer className="page-footer"><span>LOS CHAVALES FC</span><span>Perder, perder y perder <b>✳</b></span></footer>

@@ -14,7 +14,7 @@ function maskDni(dni) {
   return `${dni.slice(0, 2)}••••${dni.slice(-2)}`
 }
 
-export default function PlayerCard({ player }) {
+export default function PlayerCard({ player, showDni = true }) {
   return (
     <article className="player-card">
       <div className="player-card-top">
@@ -23,7 +23,7 @@ export default function PlayerCard({ player }) {
       </div>
       <h2>{player.nombre} {player.apellido}</h2>
       <dl className="player-details">
-        <div><dt>DNI</dt><dd aria-label="DNI parcialmente oculto">{maskDni(player.dni)}</dd></div>
+        {showDni && <div><dt>DNI</dt><dd aria-label="DNI parcialmente oculto">{maskDni(player.dni)}</dd></div>}
         <div><dt>Fecha de nacimiento</dt><dd>{formatBirthDate(player.fechaNacimiento)}</dd></div>
       </dl>
     </article>

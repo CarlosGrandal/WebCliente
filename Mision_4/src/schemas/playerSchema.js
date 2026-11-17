@@ -65,4 +65,15 @@ export const playerSchema = z.object({
     .refine(isNotFutureDate, 'La fecha de nacimiento no puede ser futura'),
 
   posicion: z.enum(playerPositions, { error: 'Selecciona una posiciÃ³n' }),
+}).superRefine((player, context) => {
+  const isNachoOya = player.nombre.toLocaleLowerCase('es-ES') === 'nacho'
+    && player.apellido.toLocaleLowerCase('es-ES') === 'oya'
+
+  if (isNachoOya) {
+    context.addIssue({
+      code: 'custom',
+      path: ['nombre'],
+      message: 'La inscripción de Nacho Oya no está permitida.',
+    })
+  }
 })

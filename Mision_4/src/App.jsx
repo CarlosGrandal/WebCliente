@@ -12,7 +12,7 @@ export default function App() {
       <main className="main-content">
         <header className="club-masthead">
           <img className="masthead-crest" src="/images/los-chavales-crest.png" alt="" />
-          <span className="masthead-name">LOS CHAVALES <b>FC</b><small>CLUB DE FÚTBOL · MADRID</small></span>
+          <span className="masthead-name">LOS CHAVALES <b>FC</b><small>CLUB DE FÚTBOL · LAS ROZAS</small></span>
           <span className="masthead-season">TEMPORADA <b>26 / 27</b></span>
         </header>
         {activePage === 'inscripcion' ? <RegistrationPage /> : <RosterPage />}

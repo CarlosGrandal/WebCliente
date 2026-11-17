@@ -118,7 +118,7 @@ export default function RegistrationPage() {
         <aside className="welcome-card">
           <div className="welcome-pattern" aria-hidden="true"><span /><span /><span /></div>
           <div className="welcome-content">
-            <div className="mini-crest" aria-hidden="true"><span>LC</span><i>FC</i></div>
+            <img className="welcome-crest" src="/images/los-chavales-crest.png" alt="" />
             <p className="welcome-kicker">MÁS QUE UN EQUIPO</p>
             <h2>El equipo<br />empieza contigo.</h2>
             <p className="welcome-copy">Pasión, compañerismo y fútbol. Aquí cada jugador cuenta desde el primer minuto.</p>
@@ -128,7 +128,7 @@ export default function RegistrationPage() {
           <div className="welcome-foot">LOS CHAVALES FC <span>·</span> DESDE 2014</div>
         </aside>
       </div>
-      <footer className="page-footer"><span>LOS CHAVALES FC</span><span>Hechos de equipo. Hechos de fútbol. <b>✳</b></span></footer>
+      <footer className="page-footer"><span>LOS CHAVALES FC</span><span>Perder, perder y perder <b>✳</b></span></footer>
     </div>
   )
 }

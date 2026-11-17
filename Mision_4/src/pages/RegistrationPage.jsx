@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { playerPositions, playerSchema } from '../schemas/playerSchema.js'
-import { submitPlayerRegistration } from '../services/submitPlayerRegistration.js'
+import { useCreatePlayer } from '../hooks/useCreatePlayer.js'
 
 const fields = [
   { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Alejandro', autoComplete: 'given-name' },
@@ -15,7 +15,8 @@ export default function RegistrationPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    reset: resetForm,
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(playerSchema),
     defaultValues: {
@@ -27,13 +28,21 @@ export default function RegistrationPage() {
       posicion: '',
     },
   })
+  const createPlayer = useCreatePlayer()
 
   const onSubmit = async (playerData) => {
-    if (isSubmitting) return
+    if (isSubmitting || createPlayer.isPending) return
 
-    // submitPlayerRegistration es temporal; sustituir por mutateAsync al conectar TanStack Query.
-    await submitPlayerRegistration(playerData)
+    createPlayer.reset()
+    try {
+      await createPlayer.mutateAsync(playerData)
+      resetForm()
+    } catch {
+      // El estado de error se presenta desde la mutation.
+    }
   }
+
+  const isSending = isSubmitting || createPlayer.isPending
 
   return (
     <div className="page-wrap">
@@ -56,7 +65,7 @@ export default function RegistrationPage() {
             </div>
             <span className="required-note">* Campos obligatorios</span>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} noValidate aria-busy={isSubmitting}>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate aria-busy={isSending}>
             <div className="field-grid">
               {fields.map(({ name, label, ...inputProps }) => {
                 const error = errors[name]
@@ -96,12 +105,13 @@ export default function RegistrationPage() {
 
             <div className="form-footer">
               <p><span className="lock-icon" aria-hidden="true">⌑</span> Tus datos se tratarán de forma confidencial.</p>
-              <button className="submit-button" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Enviando inscripción…' : 'Enviar inscripción'}
-                {!isSubmitting && <span aria-hidden="true">→</span>}
+              <button className="submit-button" type="submit" disabled={isSending}>
+                {isSending ? 'Enviando inscripción…' : 'Enviar inscripción'}
+                {!isSending && <span aria-hidden="true">→</span>}
               </button>
             </div>
-            {isSubmitSuccessful && <p className="form-success" role="status">Inscripción recibida correctamente. ¡Gracias por unirte al equipo!</p>}
+            {createPlayer.isError && <p className="form-error" role="alert">{createPlayer.error.message}</p>}
+            {createPlayer.isSuccess && <p className="form-success" role="status">Inscripción recibida correctamente. ¡Gracias por unirte al equipo!</p>}
           </form>
         </section>
 

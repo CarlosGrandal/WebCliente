@@ -7,6 +7,11 @@ export const playerPositions = [
   'Delantero',
 ]
 
+export const playerDorsalSchema = z.number({ error: 'El dorsal debe ser un n\u00FAmero entero' })
+  .int('El dorsal debe ser un n\u00FAmero entero')
+  .min(1, 'El dorsal debe estar entre 1 y 99')
+  .max(99, 'El dorsal debe estar entre 1 y 99')
+
 const dniLetters = 'TRWAGMYFPDXBNJZSQVHLCKE'
 
 function isValidSpanishDni(dni) {
@@ -51,12 +56,8 @@ export const playerSchema = z.object({
     .min(1, 'El dorsal es obligatorio')
     .regex(/^\d+$/, 'El dorsal debe ser un número entero')
     .transform(Number)
-    .pipe(
-      z.number({ error: 'El dorsal debe ser un número entero' })
-        .int('El dorsal debe ser un número entero')
-        .min(1, 'El dorsal debe estar entre 1 y 99')
-        .max(99, 'El dorsal debe estar entre 1 y 99'),
-    ),
+    .pipe(playerDorsalSchema),
+
 
   fechaNacimiento: z.string({ error: 'La fecha de nacimiento es obligatoria' })
     .min(1, 'La fecha de nacimiento es obligatoria')

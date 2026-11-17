@@ -59,7 +59,26 @@ function createPlayer(player) {
   return operation
 }
 
-app.get('/api/players', async (_request, response, next) => {
+app.get('/api/players', async (request, response, next) => {
+  if (
+    process.env.NODE_ENV !== 'production'
+    && process.env.ENABLE_CORRUPT_RESPONSE_DEMO === '1'
+    && request.query.demo === 'corrupt'
+  ) {
+    return response.json({
+      players: [{
+        id: 42,
+        nombre: 'Jugador',
+        apellido: 'De prueba',
+        dni: '12345678Z',
+        dorsal: '7',
+        fechaNacimiento: '2000-01-01',
+        posicion: 'Mediapunta',
+        createdAt: new Date().toISOString(),
+      }],
+    })
+  }
+
   try {
     await writeQueue
     response.json({ players: await readPlayers() })

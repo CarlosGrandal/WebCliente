@@ -1,3 +1,13 @@
+import { createdPlayerResponseSchema, playersResponseSchema } from '../schemas/playerResponseSchema.js'
+
+export class ApiResponseValidationError extends Error {
+  constructor(validationIssues) {
+    super('El servidor devolvió datos de jugadores con un formato inesperado. No se han mostrado.')
+    this.name = 'ApiResponseValidationError'
+    this.validationIssues = validationIssues
+  }
+}
+
 async function request(path, options) {
   let response
 
@@ -15,22 +25,35 @@ async function request(path, options) {
   }
 
   if (!response.ok) {
-    throw new Error(payload.message || `La petición falló (HTTP ${response.status}).`)
+    const error = new Error(payload.message || `La petición falló (HTTP ${response.status}).`)
+    error.status = response.status
+    error.details = payload.errors
+    throw error
   }
 
   return payload
 }
 
-export async function getPlayers() {
-  const { players } = await request('/players')
-  return players
+function throwIfInvalidResponse(result) {
+  if (!result.success) {
+    throw new ApiResponseValidationError(result.error.issues)
+  }
+  return result.data
+}
+
+export async function getPlayers({ simulateCorruptResponse = false } = {}) {
+  const path = simulateCorruptResponse ? '/players?demo=corrupt' : '/players'
+  const payload = await request(path)
+  const result = playersResponseSchema.safeParse(payload)
+  return throwIfInvalidResponse(result).players
 }
 
 export async function createPlayer(playerData) {
-  const { player } = await request('/players', {
+  const payload = await request('/players', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(playerData),
   })
-  return player
+  const result = createdPlayerResponseSchema.safeParse(payload)
+  return throwIfInvalidResponse(result).player
 }

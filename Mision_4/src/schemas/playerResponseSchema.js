@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { playerDorsalSchema, playerSchema } from './playerSchema.js'
 
-export const playerResponseSchema = playerSchema.extend({
+export const playerResponseSchema = playerSchema.safeExtend({
   id: z.uuid({ error: 'El identificador recibido no es válido' }),
   dorsal: playerDorsalSchema,
   createdAt: z.iso.datetime({ error: 'La fecha de registro recibida no es válida' }),

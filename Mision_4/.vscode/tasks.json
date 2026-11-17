@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Los Chavales FC: backend",
+      "type": "npm",
+      "script": "dev:server",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "lcf-backend",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "endsPattern": "API disponible en http://127\\.0\\.0\\.1:3001"
+        }
+      },
+      "presentation": { "panel": "dedicated", "reveal": "always" }
+    },
+    {
+      "label": "Los Chavales FC: frontend",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "lcf-vite",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "endsPattern": "http://localhost:5173/"
+        }
+      },
+      "presentation": { "panel": "dedicated", "reveal": "always" }
+    },
+    {
+      "label": "Los Chavales FC: iniciar aplicación",
+      "dependsOn": [
+        "Los Chavales FC: backend",
+        "Los Chavales FC: frontend"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true }
+    }
+  ]
+}

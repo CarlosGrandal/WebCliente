@@ -1,16 +1,39 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { registrationSchema } from '../schemas/registrationSchema.js'
+import { playerPositions, playerSchema } from '../schemas/playerSchema.js'
+import { submitPlayerRegistration } from '../services/submitPlayerRegistration.js'
 
-const positions = ['Portero', 'Defensa', 'Centrocampista', 'Delantero']
+const fields = [
+  { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Alejandro', autoComplete: 'given-name' },
+  { name: 'apellido', label: 'Apellido', type: 'text', placeholder: 'Ej. García', autoComplete: 'family-name' },
+  { name: 'dni', label: 'DNI', type: 'text', placeholder: '12345678Z', autoComplete: 'off', maxLength: 9 },
+  { name: 'dorsal', label: 'Dorsal', type: 'number', placeholder: 'Ej. 10', inputMode: 'numeric' },
+  { name: 'fechaNacimiento', label: 'Fecha de nacimiento', type: 'date', autoComplete: 'bday' },
+]
 
 export default function RegistrationPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(registrationSchema),
-    defaultValues: { nombre: '', apellidos: '', fechaNacimiento: '', posicion: '', emailContacto: '' },
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm({
+    resolver: zodResolver(playerSchema),
+    defaultValues: {
+      nombre: '',
+      apellido: '',
+      dni: '',
+      dorsal: '',
+      fechaNacimiento: '',
+      posicion: '',
+    },
   })
 
-  const onSubmit = handleSubmit(() => {})
+  const onSubmit = async (playerData) => {
+    if (isSubmitting) return
+
+    // submitPlayerRegistration es temporal; sustituir por mutateAsync al conectar TanStack Query.
+    await submitPlayerRegistration(playerData)
+  }
 
   return (
     <div className="page-wrap">
@@ -33,41 +56,52 @@ export default function RegistrationPage() {
             </div>
             <span className="required-note">* Campos obligatorios</span>
           </div>
-          <form onSubmit={onSubmit} noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate aria-busy={isSubmitting}>
             <div className="field-grid">
-              <label className="field">
-                <span>Nombre <b>*</b></span>
-                <input {...register('nombre')} placeholder="Ej. Alejandro" autoComplete="given-name" aria-invalid={!!errors.nombre} />
-                {errors.nombre && <small className="field-error">{errors.nombre.message}</small>}
-              </label>
-              <label className="field">
-                <span>Apellidos <b>*</b></span>
-                <input {...register('apellidos')} placeholder="Ej. García López" autoComplete="family-name" aria-invalid={!!errors.apellidos} />
-                {errors.apellidos && <small className="field-error">{errors.apellidos.message}</small>}
-              </label>
-              <label className="field">
-                <span>Fecha de nacimiento <b>*</b></span>
-                <input {...register('fechaNacimiento')} type="date" autoComplete="bday" aria-invalid={!!errors.fechaNacimiento} />
-                {errors.fechaNacimiento && <small className="field-error">{errors.fechaNacimiento.message}</small>}
-              </label>
-              <label className="field">
-                <span>Posición preferida <b>*</b></span>
-                <select {...register('posicion')} aria-invalid={!!errors.posicion}>
+              {fields.map(({ name, label, ...inputProps }) => {
+                const error = errors[name]
+                const errorId = `${name}-error`
+
+                return (
+                  <label className="field" htmlFor={name} key={name}>
+                    <span>{label} <b aria-hidden="true">*</b></span>
+                    <input
+                      id={name}
+                      {...register(name)}
+                      {...inputProps}
+                      aria-required="true"
+                      aria-invalid={Boolean(error)}
+                      aria-describedby={error ? errorId : undefined}
+                    />
+                    {error && <small className="field-error" id={errorId} role="alert">{error.message}</small>}
+                  </label>
+                )
+              })}
+
+              <label className="field" htmlFor="posicion">
+                <span>Posición <b aria-hidden="true">*</b></span>
+                <select
+                  id="posicion"
+                  {...register('posicion')}
+                  aria-required="true"
+                  aria-invalid={Boolean(errors.posicion)}
+                  aria-describedby={errors.posicion ? 'posicion-error' : undefined}
+                >
                   <option value="">Selecciona una posición</option>
-                  {positions.map((position) => <option key={position} value={position}>{position}</option>)}
+                  {playerPositions.map((position) => <option key={position} value={position}>{position}</option>)}
                 </select>
-                {errors.posicion && <small className="field-error">{errors.posicion.message}</small>}
-              </label>
-              <label className="field field-full">
-                <span>Correo electrónico de contacto <b>*</b></span>
-                <input {...register('emailContacto')} type="email" placeholder="tu.correo@ejemplo.com" autoComplete="email" aria-invalid={!!errors.emailContacto} />
-                {errors.emailContacto && <small className="field-error">{errors.emailContacto.message}</small>}
+                {errors.posicion && <small className="field-error" id="posicion-error" role="alert">{errors.posicion.message}</small>}
               </label>
             </div>
+
             <div className="form-footer">
-              <p><span className="lock-icon">⌑</span> Tus datos se tratarán de forma confidencial.</p>
-              <button className="submit-button" type="submit">Enviar inscripción <span aria-hidden="true">→</span></button>
+              <p><span className="lock-icon" aria-hidden="true">⌑</span> Tus datos se tratarán de forma confidencial.</p>
+              <button className="submit-button" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Enviando inscripción…' : 'Enviar inscripción'}
+                {!isSubmitting && <span aria-hidden="true">→</span>}
+              </button>
             </div>
+            {isSubmitSuccessful && <p className="form-success" role="status">Inscripción recibida correctamente. ¡Gracias por unirte al equipo!</p>}
           </form>
         </section>
 
